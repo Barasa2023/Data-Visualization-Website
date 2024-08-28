@@ -1,7 +1,7 @@
 // src/components/Login.js
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import API_BASE_URL from '../config';
+import API_BASE_URL from '../Config';
 
 function Login() {
   const [username, setUsername] = useState('');

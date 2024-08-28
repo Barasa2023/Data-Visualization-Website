@@ -1,14 +1,27 @@
+// src/components/DataList.js
 import React, { useState, useEffect } from 'react';
+import API_BASE_URL from '../Config';
 
 function DataList() {
   const [dataList, setDataList] = useState([]);
 
   useEffect(() => {
-    // Logic to fetch the list of data from the backend goes here
-    setDataList([
-      { id: 1, name: 'Dataset 1' },
-      { id: 2, name: 'Dataset 2' },
-    ]);
+    const fetchData = async () => {
+      const response = await fetch(`${API_BASE_URL}/data`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setDataList(data);
+      } else {
+        alert('Failed to fetch data.');
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (

@@ -1,13 +1,30 @@
+// src/components/Login.js
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import API_BASE_URL from '../config';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const history = useHistory();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Logic to authenticate the user with the backend goes here
-    console.log('Logging in:', { username, password });
+    const response = await fetch(`${API_BASE_URL}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem('token', data.token);
+      history.push('/upload'); // redirect to a protected route
+    } else {
+      alert('Login failed. Please check your credentials.');
+    }
   };
 
   return (
